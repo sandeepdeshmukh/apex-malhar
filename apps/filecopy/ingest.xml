@@ -23,17 +23,22 @@
 <configuration>
   <property>
     <name>dt.operator.HDFSInputModule.prop.files</name>
-    <value>hdfs://localhost:54310/user/sandeep/meetup/input/2.G.data</value>
+    <value>/user/sandeep/meetup/input/</value>
   </property>
   <property>
     <name>dt.operator.HDFSFileCopyModule.prop.outputDirectoryPath</name>
-    <value>hdfs://localhost:54310/user/dtadmin/output</value>
+    <value>/user/sandeep/meetup/output</value>
   </property>
-<-- Advanced Properties-->
+<!-- Advanced Properties-->
   <property>
-    <name>dt.operator.HDFSInputModule.prop.blockSize</name>
-    <value>128000000</value>
+    <name>dt.operator.HDFSInputModule.prop.blocksThreshold</name>
+    <value>1</value>
   </property>
+  <property>
+    <name>dt.operator.HDFSInputModule.prop.readersCount</name>
+    <value>1</value>
+  </property>
+
   <property>
     <name>dt.operator.HDFSInputModule.prop.scanIntervalMillis</name>
     <value>10000</value>

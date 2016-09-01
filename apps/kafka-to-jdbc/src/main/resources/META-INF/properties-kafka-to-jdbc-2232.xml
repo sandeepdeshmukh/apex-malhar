@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- Kafka Properties -->
+  <property>
+    <name>dt.operator.KafkaInput.prop.topics</name>
+    <value>maturity0,maturity1</value>
+  </property>
+  <property>
+    <name>dt.operator.KafkaInput.prop.clusters</name>
+    <value>node32.morado.com:9098,node34.morado.com:9098,node35.morado.com:9098</value>
+  </property>
+  <property>
+    <name>dt.operator.KafkaInput.prop.maxTuplesPerWindow</name>
+    <value>10000</value>
+  </property>
+  <property>
+    <name>dt.operator.KafkaInput.prop.initialOffset</name>
+    <value>APPLICATION_OR_LATEST</value>
+  </property>
+
+  <!-- CSVParser Properties -->
+  <property>
+    <name>dt.operator.CSVParser.port.out.attr.TUPLE_CLASS</name>
+    <value>org.apache.apex.lib.db.jdbc.schema.TransactionsSchema</value>
+  </property>
+  <property>
+    <name>dt.operator.CSVParser.prop.schema</name>
+    <value>{
+      "separator": "|",
+      "quoteChar":"\"",
+      "fields": [
+      {
+      "name": "customerName",
+      "type": "String"
+      },
+      {
+      "name": "customerPhone",
+      "type": "String"
+      },
+      {
+      "name": "customerEmail",
+      "type": "String"
+      },
+      {
+      "name": "city",
+      "type": "String"
+      },
+      {
+      "name": "country",
+      "type": "String"
+      },
+      {
+      "name": "uid",
+      "type": "String"
+      },
+      {
+      "name": "accountNumber",
+      "type": "String"
+      },
+      {
+      "name": "txId",
+      "type": "long"
+      },
+      {
+      "name": "txDate",
+      "type": "Date",
+      "constraints" : {
+      "format" : "yyyy-MM-dd HH:mm:ss"
+      }
+      },
+      {
+      "name": "txAmount",
+      "type": "double"
+      },
+      {
+      "name": "label",
+      "type": "String"
+      }
+      ]
+      }</value>
+  </property>
+  <property>
+    <name>dt.operator.CSVParser.port.in.attr.PARTITION_PARALLEL</name>
+    <value>true</value>
+  </property>
+      
+  <!-- JDBC Output Properties -->
+
+	<property>
+		<name>dt.operator.JdbcOutput.prop.store.databaseDriver
+		</name>
+		<value>com.mysql.jdbc.Driver</value>
+	</property>
+
+	<!-- URL to connect to the DB master -->
+	<property>
+		<name>dt.operator.JdbcOutput.prop.store.databaseUrl
+		</name>
+		<value>jdbc:mysql://node35.morado.com/test</value>
+	</property>
+
+	<!-- # rows that the operator can retrieve in a window -->
+	<property>
+		<name>dt.operator.JdbcOutput.prop.batchSize
+		</name>
+		<value>10000</value>
+	</property>
+
+	<!-- Output Table name -->
+	<property>
+		<name>dt.operator.JdbcOutput.prop.tablename
+		</name>
+		<value>maturity</value>
+	</property>
+
+	<!-- POJO class -->
+	<property>
+		<name>dt.operator.JdbcOutput.port.input.attr.TUPLE_CLASS
+		</name>
+		<value>org.apache.apex.lib.db.jdbc.schema.TransactionsSchema</value>
+	</property>
+    <property>
+    <name>dt.operator.JdbcOutput.prop.store.userName
+    </name>
+    <value>root</value>
+  </property>
+
+  <property>
+    <name>dt.operator.JdbcOutput.prop.store.password
+    </name>
+    <value>root@123</value>
+  </property>
+  
+    <property>
+    <name>dt.operator.JdbcOutput.port.input.attr.PARTITION_PARALLEL</name>
+    <value>true</value>
+  </property>
+  
+
+</configuration>
+
+
+
+
+
+
+
+
+
+
+<!--  create table maturity (customerName varchar(100), customerPhone varchar(100), customerEmail varchar(100),city varchar(100), country varchar(100), uid varchar(100), accountNumber varchar(100),  txId integer, txDate date, txAmount decimal, label varchar(100),state  varchar(100) ); -->

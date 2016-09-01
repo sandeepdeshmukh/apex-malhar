@@ -56,6 +56,7 @@ public class JdbcPOJOInsertOutputOperator extends AbstractJdbcPOJOOutputOperator
   @Override
   public void setup(OperatorContext context)
   {
+    LOG.info("Entry: Setup");
     super.setup(context);
 
     // Populate columnNames and columnDataTypes
@@ -80,11 +81,13 @@ public class JdbcPOJOInsertOutputOperator extends AbstractJdbcPOJOOutputOperator
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+    LOG.info("Exit: Setup");
   }
 
   @Override
   public void activate(OperatorContext context)
   {
+    LOG.info("Entry: activation");
     if (getFieldInfos() == null) {
       Field[] fields = pojoClass.getDeclaredFields();
       // Create fieldInfos in case of direct mapping
@@ -143,11 +146,13 @@ public class JdbcPOJOInsertOutputOperator extends AbstractJdbcPOJOOutputOperator
         return f.getName();
       }
     }
+    LOG.info("exit: activation");
     return null;
   }
 
   protected void populateColumnDataTypes(String columns) throws SQLException
   {
+    LOG.info("Entry: populateColumnDataTypes");
     columnNames = Lists.newArrayList();
     columnDataTypes = Lists.newArrayList();
     columnNullabilities = Lists.newArrayList();
@@ -156,7 +161,7 @@ public class JdbcPOJOInsertOutputOperator extends AbstractJdbcPOJOOutputOperator
       if (columns == null || columns.length() == 0) {
         columns = "*";
       }
-      ResultSet rs = st.executeQuery("select " + columns + " from " + getTablename());
+      ResultSet rs = st.executeQuery("select " + columns + " from " + getTablename() + " limit 1");
 
       ResultSetMetaData rsMetaData = rs.getMetaData();
       LOG.debug("resultSet MetaData column count {}", rsMetaData.getColumnCount());
@@ -170,6 +175,8 @@ public class JdbcPOJOInsertOutputOperator extends AbstractJdbcPOJOOutputOperator
         LOG.debug("column name {} type {}", rsMetaData.getColumnName(i), type);
       }
     }
+    LOG.info("Exit: populateColumnDataTypes");
+
   }
 
 

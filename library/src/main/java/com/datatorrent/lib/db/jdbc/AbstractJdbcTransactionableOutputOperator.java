@@ -68,6 +68,7 @@ public abstract class AbstractJdbcTransactionableOutputOperator<T>
 
   @Min(1)
   private int batchSize;
+
   private final List<T> tuples;
 
   private transient int batchStartIdx;
@@ -83,27 +84,35 @@ public abstract class AbstractJdbcTransactionableOutputOperator<T>
 
   public AbstractJdbcTransactionableOutputOperator()
   {
+    logger.info("Entry: AbstractJdbcTransactionableOutputOperator: Constructor");
     tuples = Lists.newArrayList();
     batchSize = DEFAULT_BATCH_SIZE;
     batchStartIdx = 0;
     store = new JdbcTransactionalStore();
+    logger.info("Exit: AbstractJdbcTransactionableOutputOperator: Constructor");
   }
 
   @Override
   public void setup(Context.OperatorContext context)
   {
+    logger.info("Entry: AbstractJdbcTransactionableOutputOperator: setup");
     super.setup(context);
+    logger.info("Exit: AbstractJdbcTransactionableOutputOperator: setup");
 
   }
 
   @Override
   public void activate(OperatorContext context)
   {
+    logger.info("Entry: AbstractJdbcTransactionableOutputOperator: activate");
     try {
+      logger.info(" AbstractJdbcTransactionableOutputOperator: activat 2");
       updateCommand = store.connection.prepareStatement(getUpdateCommand());
+      logger.info(" AbstractJdbcTransactionableOutputOperator: activat 3");
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+    logger.info("Entry: AbstractJdbcTransactionableOutputOperator: setup");
   }
 
   @Override
@@ -204,6 +213,18 @@ public abstract class AbstractJdbcTransactionableOutputOperator<T>
     this.batchSize = batchSize;
   }
 
+  /**
+   * Gets the size of a batch operation in a transaction.
+   *
+   * @return batchSize
+   */
+  
+  public int getBatchSize()
+  {
+    return batchSize;
+  }
+
+  
   /**
    * Gets the statement which insert/update the table in the database.
    *

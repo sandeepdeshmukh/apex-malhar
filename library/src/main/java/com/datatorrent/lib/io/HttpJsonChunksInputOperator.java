@@ -128,7 +128,7 @@ public class HttpJsonChunksInputOperator extends AbstractHttpInputOperator<Map<S
    * @param expectedLength
    * @throws JSONException
    */
-  private void processChunk(StringBuilder chunk, int expectedLength) throws JSONException
+  protected void processChunk(StringBuilder chunk, int expectedLength) throws JSONException
   {
     if (expectedLength > 0 && chunk.length() > 0) {
       //LOG.debug("completed chunk: " + chunkStr);

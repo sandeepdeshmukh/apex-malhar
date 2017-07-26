@@ -22,7 +22,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Queue;
 
+import com.google.common.collect.Queues;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
@@ -37,6 +39,8 @@ import com.sun.jersey.api.client.ClientResponse;
 @org.apache.hadoop.classification.InterfaceStability.Evolving
 public class HttpLinesInputOperator extends AbstractHttpInputOperator<String>
 {
+  protected transient Queue<String> toEmit = Queues.newLinkedBlockingQueue();
+
   @Override
   public void processResponse(ClientResponse response) throws IOException
   {

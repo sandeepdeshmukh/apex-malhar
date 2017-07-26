@@ -65,6 +65,7 @@ public abstract class AbstractHttpInputOperator<T> extends SimpleSinglePortInput
   private Map<String, String> headers = new HashMap<String, String>();
   private transient Client wsClient;
   private transient WebResource resource;
+  protected boolean getNext;
 
   /**
    * The url to read from.
@@ -114,6 +115,14 @@ public abstract class AbstractHttpInputOperator<T> extends SimpleSinglePortInput
   public void run()
   {
     while (super.isActive()) {
+      if (!getNext) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        continue;
+      }
       try {
         WebResource.Builder builder = resource.getRequestBuilder();
 
@@ -123,15 +132,9 @@ public abstract class AbstractHttpInputOperator<T> extends SimpleSinglePortInput
 
         ClientResponse response = builder.get(ClientResponse.class);
         processResponse(response);
+        getNext = false;
       } catch (Exception e) {
         LOG.error("Error reading from " + resource.getURI(), e);
-      }
-
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-        LOG.info("Exiting IO loop {}.", e.toString());
-        break;
       }
     }
   }
